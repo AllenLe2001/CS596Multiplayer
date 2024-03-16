@@ -22,12 +22,21 @@ public class NetworkManagerUI : NetworkBehaviour
     public AudioClip alertSound;
     public AudioSource collected;
     public AudioSource gameLost;
+    public GameObject winScreen;
+    public GameObject lostScreen;
+    public WinScreen winUI;
+    public LostScreen lostUI;
 
     public NetworkVariable<int> NumPlayers = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone);
     public NetworkVariable<int> score = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone);
      public NetworkVariable<int> deaths = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone);
     // Start is called before the first frame update
     void Awake(){
+        //finding the win and lost UI via tag
+        winScreen = GameObject.FindWithTag("Win");
+        lostScreen = GameObject.FindWithTag("Lose");
+        winUI = winScreen.GetComponent<WinScreen>();
+        lostUI = lostScreen.GetComponent<LostScreen>();
         //starting host when clicking on host button   
         hostButton.onClick.AddListener(() => {
             NetworkManager.Singleton.StartHost();
@@ -74,12 +83,20 @@ public class NetworkManagerUI : NetworkBehaviour
     public void updateScore(){
         collected.Play();
         score.Value += 1;
+        //if we hit the objective count then we show win screen by changing the variable gameWon to true 
+        //using 4 for now but in a bigger scale we would just take the initial length of the objective array
+        if(score.Value == 4) {
+        winUI.GameWonClientRpc();
+        }
+
     }
 
+    //method to keep track the amount of deaths
     public void updateSurvivors(){
         deaths.Value += 1;
         if(deaths.Value == NumPlayers.Value && NumPlayers.Value != 0){
             gameLost.Play();
+            lostUI.GameLostClientRpc();
         }
     }
 }

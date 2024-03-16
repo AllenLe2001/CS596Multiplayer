@@ -11,6 +11,8 @@ TagManager:
   - Laptop
   - Intel
   - Controls
+  - Win
+  - Lose
   layers:
   - Default
   - TransparentFX
