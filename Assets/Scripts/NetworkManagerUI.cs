@@ -26,6 +26,7 @@ public class NetworkManagerUI : NetworkBehaviour
     public GameObject lostScreen;
     public WinScreen winUI;
     public LostScreen lostUI;
+    public AudioSource winSound;
 
     public NetworkVariable<int> NumPlayers = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone);
     public NetworkVariable<int> score = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone);
@@ -87,6 +88,7 @@ public class NetworkManagerUI : NetworkBehaviour
         //using 4 for now but in a bigger scale we would just take the initial length of the objective array
         if(score.Value == 4) {
         winUI.GameWonClientRpc();
+        winSound.Play();
         }
 
     }

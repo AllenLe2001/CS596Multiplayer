@@ -15,11 +15,11 @@ public class LostScreen : NetworkBehaviour
         //when the game is lost show the screen and freeze the game
         if(GameLost){
             lostUI.SetActive(true);
-            Time.timeScale = 0f;
+            freezeTimeClientRpc();
         }
         else{
             lostUI.SetActive(false);
-            Time.timeScale = 1f;
+            enableTimeClientRpc();
         }
         
     }
@@ -29,4 +29,16 @@ public class LostScreen : NetworkBehaviour
     public void GameLostClientRpc(){
         GameLost = true;
     }
+
+    [ClientRpc]
+    void freezeTimeClientRpc(){
+        Time.timeScale = 0f;
+    }
+
+    [ClientRpc]
+    void enableTimeClientRpc(){
+        Time.timeScale = 1f;
+    }
+
+
 }

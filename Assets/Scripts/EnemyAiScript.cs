@@ -50,19 +50,25 @@ public class EnemyAiScript : MonoBehaviour
         if(transform.position == Vector3.zero){
             anim.SetFloat("Speed", 0);
         }
-        //st
+        //once we have found 2 objectives the enemy will be alerted and plays the warning audio
         if(NetworkUI.score.Value == 2 && !yellPlayed){
             aS.PlayOneShot(yellSound);
             yellPlayed = true;
         }
+        //chasing once we have found at least 2 objectives
         if(NetworkUI.score.Value >= 2 && NetworkUI.score.Value != 4){
             chasePlayer();
             chaseSound.Play();
             chaseSound.loop = true;
         }
+        //play heartbeat audio once the enemy is close
         if(targetPlayer != null){
         if(Vector3.Distance(transform.position, targetPlayer.position) <= 5f){
             heartbeat.Play();
+        }
+        //once we win the enemy will disappear
+        if(NetworkUI.score.Value == 4){
+            gameObject.SetActive(false);
         }
         }
     }

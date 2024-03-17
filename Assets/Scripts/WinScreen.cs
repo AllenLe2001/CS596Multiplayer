@@ -15,11 +15,11 @@ public class WinScreen : NetworkBehaviour
         //when the game is won show the screen and freeze the game
         if(GameWon){
             winUI.SetActive(true);
-            Time.timeScale = 0f;
+            freezeTimeClientRpc();
         }
         else{
             winUI.SetActive(false);
-            Time.timeScale = 1f;
+            enableTimeClientRpc();
         }
         
     }
@@ -28,5 +28,15 @@ public class WinScreen : NetworkBehaviour
     [ClientRpc]
     public void GameWonClientRpc(){
         GameWon = true;
+    }
+    
+    [ClientRpc]
+    void freezeTimeClientRpc(){
+        Time.timeScale = 0f;
+    }
+
+    [ClientRpc]
+    void enableTimeClientRpc(){
+        Time.timeScale = 1f;
     }
 }
