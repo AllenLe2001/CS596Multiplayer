@@ -32,6 +32,7 @@ public class NetworkManagerUI : NetworkBehaviour
     public int score = 0;
     public int deaths = 0;
     public int players = 0;
+    public int previousPlayers = 0;
     // Start is called before the first frame update
     void Awake(){
         //finding the win and lost UI via tag
@@ -74,12 +75,24 @@ public class NetworkManagerUI : NetworkBehaviour
         if(!IsHost) return;
         //obtaining number of players based on the clients open
         NumPlayers.Value = NetworkManager.Singleton.ConnectedClients.Count;
+        //storing that value also in an integer
+        int currentPlayers = NetworkManager.Singleton.ConnectedClients.Count;
+        //checking if it matches the previous count and if it doesn't then we can update in the case of disconnect
+        if(currentPlayers != previousPlayers){
+            //check if we are less now as well
+            if(currentPlayers < previousPlayers){
+                //call upon the update method for client disconnection
+                disconnectPlayerClientRpc();
+            }
+            previousPlayers = currentPlayers;
+        }
         Debug.Log("NumPlayers: " + NumPlayers.Value);
         //if our deaths match the number of players we lose
         if(deaths == players && players != 0){
             Debug.Log("Mission Failed....");
         }
     }
+
 
     [ClientRpc]
     //method to be called on to update the score
@@ -109,5 +122,14 @@ public class NetworkManagerUI : NetworkBehaviour
     //method to track number of players and use in the other methods
     public void updatePlayerClientRpc(){
         players += 1;
+    }
+
+    [ClientRpc]
+    //method to track number of players and use in the other methods for disconnection
+    public void disconnectPlayerClientRpc(){
+        //also we cant have negative players
+        if(players != 0){
+         players -= 1;
+        }
     }
 }
