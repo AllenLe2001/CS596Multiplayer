@@ -1898,8 +1898,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Controls:\nMovement - WASD\nSpace - Jump\nSprint -  Shift\n\n\nObjective:\nCollect
-    the Intel on the Map (Different Spawn each Game)\nDo Not Get Touched by the Enemy
-    (Ninja) \n1 Live per Player\nGame Lost as soon as all players are dead\n"
+    the Intel on the Map (Different Spawn each Game)\nIntel is under green sphere
+    indicator\nDo Not Get Touched by the Enemy (Ninja) \n1 Live per Player\nGame
+    Lost as soon as all players are dead\nNo Restart feature implemented so when
+    game is over just close app and start host and client again\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1926,8 +1928,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32
-  m_fontSizeBase: 32
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

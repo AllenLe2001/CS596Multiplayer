@@ -29,7 +29,7 @@ public class CameraScript : NetworkBehaviour
 
     //used to rotate our character using our mouse;
     private void Rotate(){
-        //getting input from our mouse 
+        //getting input from our mouse for both x and y axes
         float xMouse = Input.GetAxis("Mouse X") * mouseSens * Time.deltaTime;
         //rotating our character based on our mouse
         parent.Rotate(Vector3.up, xMouse);

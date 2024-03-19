@@ -29,8 +29,9 @@ public class NetworkManagerUI : NetworkBehaviour
     public AudioSource winSound;
 
     public NetworkVariable<int> NumPlayers = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone);
-    public NetworkVariable<int> score = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone);
-     public NetworkVariable<int> deaths = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone);
+    public int score = 0;
+    public int deaths = 0;
+    public int players = 0;
     // Start is called before the first frame update
     void Awake(){
         //finding the win and lost UI via tag
@@ -63,11 +64,11 @@ public class NetworkManagerUI : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {  
-         if(score.Value == 2){
+         if(score == 2){
             aS.clip = alertSound;
             aS.Play();
          }
-         scoreCount.text = "Objectives Collected: " + score.Value + "/4 ";
+         scoreCount.text = "Objectives Collected: " + score + "/4 ";
          playersCountText.text = "Players: " + NumPlayers.Value.ToString();
         //only being excuted on the server aka the HOST
         if(!IsHost) return;
@@ -75,30 +76,38 @@ public class NetworkManagerUI : NetworkBehaviour
         NumPlayers.Value = NetworkManager.Singleton.ConnectedClients.Count;
         Debug.Log("NumPlayers: " + NumPlayers.Value);
         //if our deaths match the number of players we lose
-        if(deaths.Value == NumPlayers.Value && NumPlayers.Value != 0){
+        if(deaths == players && players != 0){
             Debug.Log("Mission Failed....");
         }
     }
 
+    [ClientRpc]
     //method to be called on to update the score
-    public void updateScore(){
+    public void updateScoreClientRpc(){
         collected.Play();
-        score.Value += 1;
+        score += 1;
         //if we hit the objective count then we show win screen by changing the variable gameWon to true 
         //using 4 for now but in a bigger scale we would just take the initial length of the objective array
-        if(score.Value == 4) {
+        if(score == 4) {
         winUI.GameWonClientRpc();
         winSound.Play();
         }
 
     }
 
+    [ClientRpc]
     //method to keep track the amount of deaths
-    public void updateSurvivors(){
-        deaths.Value += 1;
-        if(deaths.Value == NumPlayers.Value && NumPlayers.Value != 0){
+    public void updateSurvivorsClientRpc(){
+        deaths += 1;
+        if(deaths == players && players != 0){
             gameLost.Play();
             lostUI.GameLostClientRpc();
         }
+    }
+
+    [ClientRpc]
+    //method to track number of players and use in the other methods
+    public void updatePlayerClientRpc(){
+        players += 1;
     }
 }

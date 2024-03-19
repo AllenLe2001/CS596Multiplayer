@@ -22,7 +22,7 @@ public class IntelScript : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other){
         if(other.CompareTag("Player")){
-            NetworkUI.updateScore();
+            NetworkUI.updateScoreClientRpc();
             Debug.Log("Collided with user");
             DespawnClientRpc();
         }

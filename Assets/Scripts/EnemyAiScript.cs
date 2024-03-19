@@ -51,12 +51,12 @@ public class EnemyAiScript : MonoBehaviour
             anim.SetFloat("Speed", 0);
         }
         //once we have found 2 objectives the enemy will be alerted and plays the warning audio
-        if(NetworkUI.score.Value == 2 && !yellPlayed){
+        if(NetworkUI.score == 2 && !yellPlayed){
             aS.PlayOneShot(yellSound);
             yellPlayed = true;
         }
         //chasing once we have found at least 2 objectives
-        if(NetworkUI.score.Value >= 2 && NetworkUI.score.Value != 4){
+        if(NetworkUI.score >= 2 && NetworkUI.score != 4){
             chasePlayer();
             chaseSound.Play();
             chaseSound.loop = true;
@@ -67,7 +67,7 @@ public class EnemyAiScript : MonoBehaviour
             heartbeat.Play();
         }
         //once we win the enemy will disappear
-        if(NetworkUI.score.Value == 4){
+        if(NetworkUI.score == 4){
             gameObject.SetActive(false);
         }
         }
@@ -103,7 +103,7 @@ public class EnemyAiScript : MonoBehaviour
            attackedSound.Play();
            other.gameObject.SetActive(false);
            heartbeat.Stop();
-           NetworkUI.updateSurvivors();
+           NetworkUI.updateSurvivorsClientRpc();
 
         }
     }

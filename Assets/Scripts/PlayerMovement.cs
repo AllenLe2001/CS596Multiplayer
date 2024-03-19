@@ -27,6 +27,7 @@ public class PlayerMovement : NetworkBehaviour
     public float gravity = -9.81f;
     public float jumpHeight = 5f;
     public float playerDistance = 5f;
+    public NetworkManagerUI NetworkUI;
 
     
 
@@ -41,6 +42,9 @@ public class PlayerMovement : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //referencing the networkUI script to get the network variable
+        NetworkUI = GameObject.FindObjectOfType<NetworkManagerUI>();
+        NetworkUI.updatePlayerClientRpc();
         //spawn position
         character =  GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
@@ -209,5 +213,6 @@ public class PlayerMovement : NetworkBehaviour
         float z = Random.Range(playerDistance, -playerDistance);
         transform.position = new Vector3 (x, 0 ,z);
     }
+
 
 }
